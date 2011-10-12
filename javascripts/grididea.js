@@ -154,17 +154,15 @@ var MediaContainer = Backbone.View.extend({
 			
 			var divider_width = width / this.dotSpacing;
 			var divider_height = height / this.dotSpacing;
-			var divider = divider_width > divider_height ? divider_width : divider_height;
-			var floored_divider = Math.floor(divider);
 			
-			width = height = floored_divider * this.dotSpacing;
+			var floored_width = Math.floor(divider_width);
+			var floored_height = Math.floor(divider_height);
 			
-			if(divider - floored_divider > 0.5)
-			{
-					width = height = (floored_divider + 1) * this.dotSpacing ;
-			}
+			width = (divider_width - floored_width > 0.5) ? (floored_width + 1) * this.dotSpacing : floored_width * this.dotSpacing;
+			height = (divider_height - floored_height > 0.5) ? (floored_height + 1) * this.dotSpacing : floored_height * this.dotSpacing;
 			
-			if(width < 10) width = height = 10;
+			if(width < 10) width = 10;
+			if(height < 10) height = 10;
 			
 			this.sizing_media.model.set({"width" : width, "height" : height});
 		}
@@ -176,7 +174,12 @@ var MediaContainer = Backbone.View.extend({
 		{
 			if(this.sizing_media.model.get("width") <= 10)
 			{
-				this.sizing_media.model.set({"width" : this.dotSpacing, "height" : this.dotSpacing});
+				this.sizing_media.model.set({"width" : this.dotSpacing});
+			}
+			
+			if(this.sizing_media.model.get("height") <= 10)
+			{
+				this.sizing_media.model.set({"height" : this.dotSpacing});
 			}
 			
 			this.sizing_media = false;
