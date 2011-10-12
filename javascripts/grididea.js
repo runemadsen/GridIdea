@@ -35,7 +35,7 @@ var DotView = Backbone.View.extend({
 	events: {
 		"mousedown" : "mousedown",
 		"ondrag" : "prevent_drag",
-		"onselect" : "prevent_drag" // also do on entire dot container
+		"onselect" : "prevent_drag"
   },
 
 	prevent_drag : function(e)
@@ -84,9 +84,17 @@ _________________________________________________________ */
 var MediaContainer = Backbone.View.extend({
   
 	events: {
+			"mousedown" : "mousedown",
 	    "mousemove" : "mousemove",
-			"mouseup" : "mouseup"
-	  },
+			"mouseup" : "mouseup",
+			"ondrag" : "prevent_drag",
+			"onselect" : "prevent_drag"
+	},
+	
+	prevent_drag : function(e)
+	{
+		e.preventDefault();
+	},
 	
 	initialize: function() 
 	{
@@ -131,6 +139,11 @@ var MediaContainer = Backbone.View.extend({
 		medias.add({"left" : dot.model.get("left") + 3, "top" : dot.model.get("top") + 3});
 	},
 	
+	mousedown : function(e)
+	{
+		e.preventDefault();
+	},
+	
 	mousemove : function(e)
 	{
 		if(this.sizing_media)
@@ -148,7 +161,7 @@ var MediaContainer = Backbone.View.extend({
 			
 			if(divider - floored_divider > 0.5)
 			{
-					width = height = (floored_divider * this.dotSpacing) + 1;
+					width = height = (floored_divider + 1) * this.dotSpacing ;
 			}
 			
 			if(width < 10) width = height = 10;
