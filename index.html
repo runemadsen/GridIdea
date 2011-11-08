@@ -6,43 +6,20 @@
 	<script type="text/javascript" src="javascripts/underscore.js"></script>
 	<script type="text/javascript" src="javascripts/backbone.js"></script>
 	<script type="text/javascript" src="javascripts/handlebars.js"></script>
+	<link rel="stylesheet" href="stylesheets/grididea.css" type="text/css" media="screen" />
 	
 	<script id="box-template" type="text/x-handlebars-template">
 	</script>
 	
-	<style type="text/css" media="screen">
-		body, html {
-			height: 100%;
-			margin: 0;
-			padding: 0;
-		}
-		
-		#container {
-			width: 1087px;
-			margin: 0 auto;
-			height: 100%;
-			position: relative;
-		}
-		
-		#media-container {
-			margin-top: 60px;
-			width: 100%;
-			height: 800px;
-		}
-		
-		.box {
-			width: 180px;
-			height: 180px;
-			border-left: 1px solid #CECECE;
-			border-top: 1px solid #CECECE;
-			float: left;
-		}
-		
-		.box.last_in_row {
-			border-right: 1px solid #CECECE;
-		}
-	
-	</style>
+	<script id="new-box-template" type="text/x-handlebars-template">
+		<div id="new_box_inner">
+			<form>
+				<textarea></textarea>
+				<input type="submit" value="Save" />
+			</form>
+		</div
+	</script>
+
 </head>
 <body>
 	

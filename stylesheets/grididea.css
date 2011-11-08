@@ -1,0 +1,80 @@
+body, html {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+#container {
+	width: 1087px;
+	margin: 0 auto;
+	height: 100%;
+	position: relative;
+}
+
+#media-container {
+	margin-top: 60px;
+	width: 100%;
+	height: 800px;
+}
+
+.box {
+	width: 180px;
+	height: 180px;
+	border-left: 1px solid #CECECE;
+	border-top: 1px solid #CECECE;
+	float: left;
+	cursor: pointer;
+	cursor: hand;
+}
+
+.box:hover {
+	background-color: #eeeeee;
+}
+
+.box.last_in_row {
+	border-right: 1px solid #CECECE;
+}
+
+/*  New Box
+_________________________________________________________ */
+
+#new_box {
+	position: absolute;
+	top: 160px;
+	left: 163px;
+	width: 220px;
+	height: 220px;
+	background-color: #292929;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+#new_box_inner {
+	width: 180px;
+	height: 180px;
+	margin: 20px;
+	overflow: hidden;
+	background-color: #FFF;
+}
+
+#new_box_inner textarea {
+	width: 180px;
+	height: 150px;
+	border: none;
+	background-color: #FFF;
+	font-family: Helvetica;
+	padding: 10px;
+	font-size: 14px;
+	font-weight: bold;
+	resize: none;
+	color: #222222;
+}
+
+#new_box_inner input[type=submit] {
+	background-color: #292929;
+	border: none;
+	color: #FFF;
+	font-size: 14px;
+	padding: 5px 10px;
+}

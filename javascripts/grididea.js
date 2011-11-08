@@ -14,7 +14,7 @@ var BoxList = Backbone.Collection.extend({
 
 var boxes = new BoxList();
 
-/*	Views
+/*	Box View
 _________________________________________________________ */
 
 var BoxView = Backbone.View.extend({
@@ -46,6 +46,24 @@ var BoxView = Backbone.View.extend({
 	
 });
 
+/*	New Box Video
+_________________________________________________________ */
+
+var NewBoxView = Backbone.View.extend({
+  
+	tagName: "div",
+	id: "new_box",
+	
+	template: Handlebars.compile($("#new-box-template").html()),
+	
+	render : function()
+	{
+		$(this.el).html(this.template());
+		return this;
+	}
+	
+});
+
 /*	App View
 _________________________________________________________ */
 
@@ -55,6 +73,7 @@ var MediaContainer = Backbone.View.extend({
 	{
 		boxes.bind('add', this.add_box_view, this);
 		this.generate_boxes();
+		this.test_input();
   },
 
 	generate_boxes : function()
@@ -67,6 +86,12 @@ var MediaContainer = Backbone.View.extend({
 			boxes.add(o);
 			counter++;
 		}
+	},
+	
+	test_input : function()
+	{
+		var view = new NewBoxView();
+		$(this.el).append(view.render().el);
 	},
 
 	add_box_view : function(box)
