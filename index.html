@@ -7,7 +7,7 @@
 	<script type="text/javascript" src="javascripts/backbone.js"></script>
 	<script type="text/javascript" src="javascripts/handlebars.js"></script>
 	
-	<script id="dot-template" type="text/x-handlebars-template">
+	<script id="box-template" type="text/x-handlebars-template">
 	</script>
 	
 	<style type="text/css" media="screen">
@@ -18,34 +18,30 @@
 		}
 		
 		#container {
-			width: 1080px;
+			width: 1087px;
 			margin: 0 auto;
 			height: 100%;
 			position: relative;
 		}
 		
 		#media-container {
+			margin-top: 60px;
 			width: 100%;
 			height: 800px;
 		}
 		
-		.dot {
-			width: 6px;
-			height: 6px;
-			background-color: #a9bbc7;
-			position: absolute;
-			-moz-border-radius: 3px;
-			-webkit-border-radius: 3px;
-			cursor: pointer;
+		.box {
+			width: 180px;
+			height: 180px;
+			border-left: 1px solid #CECECE;
+			border-top: 1px solid #CECECE;
+			float: left;
 		}
 		
-		.media {
-			width: 10px;
-			height: 10px;
-			background-color: #EDEDED;
-			position: absolute;
+		.box.last_in_row {
+			border-right: 1px solid #CECECE;
 		}
-		
+	
 	</style>
 </head>
 <body>
@@ -53,7 +49,7 @@
 	<div id="container">
 		
 		<div id="media-container">
-			
+			<div class="clear"></div>
 		</div>
 		
 	</div>

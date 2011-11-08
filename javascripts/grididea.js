@@ -1,82 +1,47 @@
 /*	Models
 __________________________________________________________ */
 
-var Dot = Backbone.Model.extend({
-	defaults: {}
-});
-
-var Media = Backbone.Model.extend({
+var Box = Backbone.Model.extend({
 	defaults: {}
 });
 
 /*	Collections
 __________________________________________________________ */
 
-var DotList = Backbone.Collection.extend({
-	model : Dot
+var BoxList = Backbone.Collection.extend({
+	model : Box
 });
 
-var dots = new DotList();
-
-var MediaList = Backbone.Collection.extend({
-	model : Media
-});
-
-var medias = new DotList();
+var boxes = new BoxList();
 
 /*	Views
 _________________________________________________________ */
 
-var DotView = Backbone.View.extend({
+var BoxView = Backbone.View.extend({
   
 	tagName: "div",
-	className: "dot",
+	className: "box",
 	
-	template: Handlebars.compile($("#dot-template").html()),
+	template: Handlebars.compile($("#box-template").html()),
 
 	events: {
-		"mousedown" : "mousedown",
-		"ondrag" : "prevent_drag",
-		"onselect" : "prevent_drag"
+		"mousedown" : "mousedown"
   },
-
-	prevent_drag : function(e)
-	{
-		e.preventDefault();
-	},
 	
 	render : function()
 	{
 		$(this.el).html(this.template(this.model.toJSON()));
-		$(this.el).css("left", this.model.get("left"));
-		$(this.el).css("top", this.model.get("top"));
+		if(this.model.get("class"))
+		{
+			$(this.el).addClass(this.model.get("class"));
+		}
 		return this;
 	},
 	
 	mousedown : function()
 	{
-		this.model.trigger("mousedown", this);
-	}
-	
-});
-
-var MediaView = Backbone.View.extend({
-  
-	tagName: "div",
-	className: "media",
-	
-	initialize : function()
-	{
-		this.model.bind('change', this.render, this);
-	},
-	
-	render : function()
-	{
-		$(this.el).css("left", this.model.get("left"));
-		$(this.el).css("top", this.model.get("top"));
-		$(this.el).css("width", this.model.get("width"));
-		$(this.el).css("height", this.model.get("height"));
-		return this;
+		console.log('Clicked');
+		//this.model.trigger("mousedown", this);
 	}
 	
 });
@@ -85,109 +50,29 @@ var MediaView = Backbone.View.extend({
 _________________________________________________________ */
 
 var MediaContainer = Backbone.View.extend({
-  
-	events: {
-			"mousedown" : "mousedown",
-	    "mousemove" : "mousemove",
-			"mouseup" : "mouseup",
-			"ondrag" : "prevent_drag",
-			"onselect" : "prevent_drag"
-	},
-	
-	prevent_drag : function(e)
-	{
-		e.preventDefault();
-	},
 	
 	initialize: function() 
 	{
-		dots.bind('add', this.add_dot_view, this);
-		dots.bind('mousedown', this.dot_mousedown, this)
-		medias.bind('add', this.add_media_view, this);
-		
-		this.generate_dots();
+		boxes.bind('add', this.add_box_view, this);
+		this.generate_boxes();
   },
 
-	generate_dots : function()
+	generate_boxes : function()
 	{
-		var dotsAcross = 20;
-		this.dotSpacing = ($(this.el).width() - 6) / (dotsAcross - 1);
-		var yPos = 0;
-		
-		while(yPos < $(this.el).height())
+		var across = 6;
+		var counter = 0;
+		while(counter < 6 * 20)
 		{
-			for(var i = 0; i < dotsAcross; i++)
-			{
-				dots.add({"left" : i * this.dotSpacing, "top" : yPos});
-			}
-			
-			yPos += this.dotSpacing;
+			var o = counter % across == 5 ? {class : "last_in_row"} : {};
+			boxes.add(o);
+			counter++;
 		}
 	},
 
-	add_dot_view : function(dot)
+	add_box_view : function(box)
 	{
-		var view = new DotView({model: dot});
+		var view = new BoxView({model: box});
 		$(this.el).append(view.render().el);
-	},
-	
-	add_media_view : function(media)
-	{
-		this.sizing_media = new MediaView({model: media});
-		$(this.el).append(this.sizing_media.render().el);
-	},
-	
-	dot_mousedown : function(dot)
-	{
-		medias.add({"left" : dot.model.get("left") + 3, "top" : dot.model.get("top") + 3});
-	},
-	
-	mousedown : function(e)
-	{
-		e.preventDefault();
-	},
-	
-	mousemove : function(e)
-	{
-		if(this.sizing_media)
-		{
-			var offset = $(this.sizing_media.el).offset();
-			var width = e.pageX - offset.left;
-			var height = e.pageY - offset.top;
-			
-			var divider_width = width / this.dotSpacing;
-			var divider_height = height / this.dotSpacing;
-			
-			var floored_width = Math.floor(divider_width);
-			var floored_height = Math.floor(divider_height);
-			
-			width = (divider_width - floored_width > 0.5) ? (floored_width + 1) * this.dotSpacing : floored_width * this.dotSpacing;
-			height = (divider_height - floored_height > 0.5) ? (floored_height + 1) * this.dotSpacing : floored_height * this.dotSpacing;
-			
-			if(width < 10) width = 10;
-			if(height < 10) height = 10;
-			
-			this.sizing_media.model.set({"width" : width, "height" : height});
-		}
-	},
-	
-	mouseup : function()
-	{
-		if(this.sizing_media)
-		{
-			if(this.sizing_media.model.get("width") <= 10)
-			{
-				this.sizing_media.model.set({"width" : this.dotSpacing});
-			}
-			
-			if(this.sizing_media.model.get("height") <= 10)
-			{
-				this.sizing_media.model.set({"height" : this.dotSpacing});
-			}
-			
-			this.sizing_media = false;
-		}
-		
 	}
 	
 });
