@@ -40,8 +40,7 @@ var BoxView = Backbone.View.extend({
 	
 	mousedown : function()
 	{
-		console.log('Clicked');
-		//this.model.trigger("mousedown", this);
+		this.trigger("mousedown", this);
 	}
 	
 });
@@ -59,6 +58,9 @@ var NewBoxView = Backbone.View.extend({
 	render : function()
 	{
 		$(this.el).html(this.template());
+		$(this.el).css("left", this.options.left);
+		$(this.el).css("top", this.options.top);
+		//this.$('textarea').focus();
 		return this;
 	}
 	
@@ -71,9 +73,9 @@ var MediaContainer = Backbone.View.extend({
 	
 	initialize: function() 
 	{
+		this.new_box_view = null;
 		boxes.bind('add', this.add_box_view, this);
 		this.generate_boxes();
-		this.test_input();
   },
 
 	generate_boxes : function()
@@ -88,15 +90,24 @@ var MediaContainer = Backbone.View.extend({
 		}
 	},
 	
-	test_input : function()
+	add_new_box_view : function(box_view)
 	{
-		var view = new NewBoxView();
+		if(this.new_box_view)
+		{
+			this.new_box_view.remove();
+		}
+		
+		var pos = $(box_view.el).position();
+		var view = new NewBoxView({left: pos.left - 20, top: pos.top - 20});
 		$(this.el).append(view.render().el);
+		this.new_box_view = view;
 	},
 
 	add_box_view : function(box)
 	{
+		
 		var view = new BoxView({model: box});
+		view.bind('mousedown', this.add_new_box_view, this);
 		$(this.el).append(view.render().el);
 	}
 	
