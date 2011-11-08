@@ -31,6 +31,8 @@ var DotView = Backbone.View.extend({
   
 	tagName: "div",
 	className: "dot",
+	
+	template: Handlebars.compile($("#dot-template").html()),
 
 	events: {
 		"mousedown" : "mousedown",
@@ -45,6 +47,7 @@ var DotView = Backbone.View.extend({
 	
 	render : function()
 	{
+		$(this.el).html(this.template(this.model.toJSON()));
 		$(this.el).css("left", this.model.get("left"));
 		$(this.el).css("top", this.model.get("top"));
 		return this;
@@ -107,7 +110,7 @@ var MediaContainer = Backbone.View.extend({
 
 	generate_dots : function()
 	{
-		var dotsAcross = 15;
+		var dotsAcross = 20;
 		this.dotSpacing = ($(this.el).width() - 6) / (dotsAcross - 1);
 		var yPos = 0;
 		
@@ -189,4 +192,4 @@ var MediaContainer = Backbone.View.extend({
 	
 });
 
-window.mediaContainer = new MediaContainer({"el" : "#container"});
+window.mediaContainer = new MediaContainer({"el" : "#media-container"});

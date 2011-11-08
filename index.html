@@ -5,6 +5,11 @@
 	<script type="text/javascript" src="javascripts/json2.js"></script>
 	<script type="text/javascript" src="javascripts/underscore.js"></script>
 	<script type="text/javascript" src="javascripts/backbone.js"></script>
+	<script type="text/javascript" src="javascripts/handlebars.js"></script>
+	
+	<script id="dot-template" type="text/x-handlebars-template">
+	</script>
+	
 	<style type="text/css" media="screen">
 		body, html {
 			height: 100%;
@@ -13,10 +18,15 @@
 		}
 		
 		#container {
-			width: 920px;
+			width: 1080px;
 			margin: 0 auto;
 			height: 100%;
 			position: relative;
+		}
+		
+		#media-container {
+			width: 100%;
+			height: 800px;
 		}
 		
 		.dot {
@@ -32,7 +42,7 @@
 		.media {
 			width: 10px;
 			height: 10px;
-			background-color: red;
+			background-color: #EDEDED;
 			position: absolute;
 		}
 		
@@ -41,6 +51,11 @@
 <body>
 	
 	<div id="container">
+		
+		<div id="media-container">
+			
+		</div>
+		
 	</div>
 		
 	<script type="text/javascript" src="javascripts/grididea.js"></script>
