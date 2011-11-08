@@ -60,7 +60,6 @@ var NewBoxView = Backbone.View.extend({
 		$(this.el).html(this.template());
 		$(this.el).css("left", this.options.left);
 		$(this.el).css("top", this.options.top);
-		//this.$('textarea').focus();
 		return this;
 	}
 	
