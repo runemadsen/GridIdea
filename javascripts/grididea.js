@@ -41,6 +41,7 @@ var BoxView = Backbone.View.extend({
 	mousedown : function()
 	{
 		this.trigger("mousedown", this);
+		return false;
 	}
 	
 });
@@ -59,7 +60,7 @@ var NewBoxView = Backbone.View.extend({
 	{
 		$(this.el).html(this.template());
 		$(this.el).css("left", this.options.left);
-		$(this.el).css("top", this.options.top);
+		$(this.el).css("top", this.options.top);		
 		return this;
 	}
 	
@@ -99,7 +100,9 @@ var MediaContainer = Backbone.View.extend({
 		var pos = $(box_view.el).position();
 		var view = new NewBoxView({left: pos.left - 20, top: pos.top - 20});
 		$(this.el).append(view.render().el);
+		$(view.el).find('form textarea:first').focus();
 		this.new_box_view = view;
+		return false;
 	},
 
 	add_box_view : function(box)
