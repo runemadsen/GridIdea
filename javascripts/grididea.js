@@ -81,9 +81,9 @@ var MediaContainer = Backbone.View.extend({
 
 	bind_events: function()
 	{
-		var t = this;
+		var that = this;
 		$(window).click(function() {
-			t.mousedown();
+			that.mousedown();
 		});
 	},
 
