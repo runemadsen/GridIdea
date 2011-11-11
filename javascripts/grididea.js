@@ -76,7 +76,16 @@ var MediaContainer = Backbone.View.extend({
 		this.new_box_view = null;
 		boxes.bind('add', this.add_box_view, this);
 		this.generate_boxes();
+		this.bind_events();
   },
+
+	bind_events: function()
+	{
+		var t = this;
+		$(window).click(function() {
+			t.mousedown();
+		});
+	},
 
 	generate_boxes : function()
 	{
@@ -111,6 +120,14 @@ var MediaContainer = Backbone.View.extend({
 		var view = new BoxView({model: box});
 		view.bind('mousedown', this.add_new_box_view, this);
 		$(this.el).append(view.render().el);
+	},
+	
+	mousedown : function()
+	{
+		if(this.new_box_view)
+		{
+			this.new_box_view.remove();
+		}
 	}
 	
 });
