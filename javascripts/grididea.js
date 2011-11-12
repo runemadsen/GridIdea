@@ -27,6 +27,11 @@ var BoxView = Backbone.View.extend({
 	events: {
 		"mousedown" : "mousedown"
   },
+
+	initialize : function()
+	{
+		this.model.bind('change', this.render, this);
+	},
 	
 	render : function()
 	{
@@ -60,8 +65,36 @@ var NewBoxView = Backbone.View.extend({
 	{
 		$(this.el).html(this.template());
 		$(this.el).css("left", this.options.left);
-		$(this.el).css("top", this.options.top);		
+		$(this.el).css("top", this.options.top);
+		this.bind_form_events();		
 		return this;
+	},
+	
+	bind_form_events : function()
+	{
+		var t = this;
+		
+		this.$('form').submit(function() {
+			t.trigger('submit', t);
+			t.remove();
+			return false;
+		});
+		
+		/* remove box on click
+		
+		$(window).click(function() {
+			that.remove();
+		});*/
+	},
+	
+	focus : function()
+	{
+		$(this.el).find('form textarea:first').focus();
+	},
+	
+	text_content : function()
+	{
+		return $(this.el).find('form textarea:first').val();
 	}
 	
 });
@@ -74,18 +107,10 @@ var MediaContainer = Backbone.View.extend({
 	initialize: function() 
 	{
 		this.new_box_view = null;
+		this.box_view = null;
 		boxes.bind('add', this.add_box_view, this);
 		this.generate_boxes();
-		this.bind_events();
   },
-
-	bind_events: function()
-	{
-		var that = this;
-		$(window).click(function() {
-			that.mousedown();
-		});
-	},
 
 	generate_boxes : function()
 	{
@@ -108,26 +133,30 @@ var MediaContainer = Backbone.View.extend({
 		
 		var pos = $(box_view.el).position();
 		var view = new NewBoxView({left: pos.left - 20, top: pos.top - 20});
+		view.bind('submit', this.fill_box_view, this);
 		$(this.el).append(view.render().el);
-		$(view.el).find('form textarea:first').focus();
+		view.focus();
 		this.new_box_view = view;
+		this.box_view = box_view;
 		return false;
 	},
 
 	add_box_view : function(box)
 	{
-		
 		var view = new BoxView({model: box});
 		view.bind('mousedown', this.add_new_box_view, this);
 		$(this.el).append(view.render().el);
 	},
 	
-	mousedown : function()
+	fill_box_view : function(new_box_view)
 	{
-		if(this.new_box_view)
-		{
-			this.new_box_view.remove();
-		}
+		this.box_view.model.set({
+			type : "text",
+			content : new_box_view.text_content()
+		})
+		
+		this.new_box_view = null;
+		this.box_view = null;
 	}
 	
 });

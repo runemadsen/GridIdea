@@ -9,6 +9,11 @@
 	<link rel="stylesheet" href="stylesheets/grididea.css" type="text/css" media="screen" />
 	
 	<script id="box-template" type="text/x-handlebars-template">
+		{{#if content}}
+		<div class="text-content">
+			{{content}}
+		</div>
+		{{/if}}
 	</script>
 	
 	<script id="new-box-template" type="text/x-handlebars-template">
